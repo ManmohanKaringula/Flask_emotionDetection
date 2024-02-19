@@ -5,19 +5,16 @@
 from flask import Flask, render_template, request
 from EmotionDetection.emotion_detection import emotion_detector
 
-app= flask("Emotion Detection")
+app= Flask("Emotion Detection")
 @app.route("/emotionDetector")
 def emotion_detector():
     text_to_analyze = request.args.get('textToAnalyze')
     response = emotion_detector(text_to_analyze)
-    formated_output= "For the given statement the system response is {} and {}. The dominant emotion is {}"
-    for key, value in response.items():
-        if key =='sadness':
-        
-        elif key == 'dominant_emotion':
-
-        else:
-            formated_output += f' {key}: {value}'                  
+    formatted_output = "For the given statement the system response is "
+    formatted_output += ", ".join([f"{key}: {value}" for key, value in response.items() if key != "sadness" and key != "dominant_emotion"])
+    formatted_output += " and {}: {}".format("sadness", response.get("sadness", ""))
+    formatted_output += ", {} {}".format(". The dominant emotion is", response.get("dominant_emotion", ""))
+    return formatted_output
 
 
 
@@ -30,5 +27,4 @@ def render_index_page():
     #TODO
 
 if __name__ == "__main__":
-    ''' This functions executes the flask app and deploys it on localhost:5000
-    '''#TODO
+    app.run(host="0.0.0.0", port=6000)
