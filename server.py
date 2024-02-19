@@ -1,6 +1,10 @@
+"""
+This module provides a Flask application for emotion detection.
+"""
+
+from typing import Dict, Union
 from flask import Flask, render_template, request
 from EmotionDetection.emotion_detection import emotion_detector
-from typing import Dict, Union
 
 app = Flask("Emotion Detection")
 
